@@ -29,9 +29,17 @@ public class Person5 {
 	 * @param input the string to be modified
 	 * @return the modified string
 	 */
-	private String calc(String input) {
-	  //Person 5 put your implementation here
-	  return null;
+	private String calc(String input) 
+	{
+		char[] array = input.toCharArray();
+		for(int i = 0; i < array.length; i++)
+		{
+			int x = (i-3)%array.length;
+			if(x < 0) x += array.length;
+			System.out.println(x);
+			array[x] = input.charAt(i);
+		}
+		return new String(array);
 	}
 	
 	/**
