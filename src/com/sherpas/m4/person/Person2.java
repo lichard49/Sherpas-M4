@@ -1,4 +1,7 @@
-package edu.gatech.oad.antlab.person;
+package com.sherpas.m4.person;
+
+import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  *  A simple class for person 2
@@ -29,9 +32,22 @@ public class Person2 {
 	 * @param input the string to be modified
 	 * @return the modified string
 	 */
-	private String calc(String input) {
-	  //Person 2 put your implementation here
-	  return null;
+	private String calc(String input)
+	{
+		ArrayList<Character> chars = new ArrayList<Character>(input.length());
+		for(int i = 0; i<input.length(); i++)
+		{
+			chars.add(input.charAt(i));
+		}
+		
+		Collections.shuffle(chars);
+		
+		String s = "";
+		for(Character c: chars)
+		{
+			s += c;
+		}
+		return s;
 	}
 	/**
 	 * Return a string rep of this object
@@ -41,7 +57,8 @@ public class Person2 {
 	 * @return the string representing the 
 	 *         object
 	 */
-	public String toString(String input) {
-	  return name + calc(input);
+	public String toString(String input) 
+	{
+		return name + calc(input);
 	}
 }
