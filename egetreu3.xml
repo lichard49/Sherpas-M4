@@ -1,0 +1,105 @@
+<project name="M4" default="all" basedir=".">
+
+	<!-- Emily Getreu -->
+	<!-- egetreu3 -->
+	<!-- 902448756 -->
+	<!-- egetreu@gatech.edu -->
+
+	<!-- INIT -->
+	<!-- SETUP ALL PROPERTIES-->
+
+	<target name="init" description= this is step 1>
+		<echo> INITIATE INIT </echo>
+		<property name="build.dir" value="build" />
+		<property name="src.dir" value="src/com/sherpas/m4/" />
+		<property name="doc.dir" value="apidoc" />
+		<property name="out.dir" value="out" />
+		<property name="lib.dir" value="lib/resources.jar" />
+		<echo> FINISH INIT </echo>
+	</target>
+	
+
+	<!-- THIS HOLD THE PATH OF THE RESOURCE.JAR FILE-->
+
+	<path id="resourcepathholder">
+		<fileset dir="${lib.dir}" >
+			<include name="resources.jar" />
+		</fileset>
+	</path>
+	
+	<!-- PREPARE -->
+	<!-- MAKE ALL THE REQUIRED DIRECTORIES -->
+
+	<target name="prepare" depends="init" description= this is step 2>
+		<echo> INITIATE PREPARE </echo>
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${doc.dir}" />
+		<mkdir dir="${out.dir}" />
+		<echo> FINISH PREPARE </echo>
+	</target>
+
+	<!-- COMPILE-->
+	<!-- COMPILE ALL JAVA CLASSES TO THE BUILD DIRECTORY -->
+
+	<target name="compile" depends="prepare" description= this is step 3>
+		<echo> INITIATE COMPILE </echo>
+		<javac srcdir="${src.dir}" destdir="${build.dir}" classpath="${lib.dir}" />
+		<echo> FINISH COMPILE </echo>
+	</target>
+	
+	<!-- JAVADOCS-->
+	<!-- GENERATE JAVADOC DOCUCUMENTATION IN THE 'SRC' DIRECTORY -->
+
+	<target name="javadoc" depends="compile" description= this is step 4>
+		<echo> INITIATE JAVADOC </echo>
+		<javadoc sourcepath="${src.dir}" destdir="${doc.dir}"/>
+		<echo> FINISH JAVADOC </echo>
+	</target>
+	
+	<!-- JAR-->
+	<!--PACKAGE OF THE COMPILED CLASSES CALLED ANTLABRUN.JAR -->
+
+	<target name="jar" depends="compile" description= this is step 5>
+		<echo> INITIATE JAR </echo>
+		<jar destfile="AntLabRun.jar" basedir="${build.dir}"
+			includes="${build.dir}/**" excludes="${lib.dir}">
+			<manifest>
+				<attribute name="AntLabRun" value="edu.gatech.oad.AntLabRun"/>
+			</manifest>
+		</jar>
+		<echo> FINISH JAR </echo>
+	</target>
+
+	<!--  RUN-->
+	<!-- START PROGRAM EXECUTION AND RUN THE JAR FILE CREATED -->
+
+	<target name="run" depends="jar" description= this is step 6>
+		<echo> INITIATE RUN </echo>
+		<java jar="AntLabRun.jar" fork="true">
+		<classpath>
+			<pathelement location="${build.dir}"/>
+			<pathelement location="${jdk_lib}/j2me.jar"/>
+			<pathelement location="java.class.path"/>
+		</classpath>
+		</java>
+		<echo> FINISH RUN </echo>
+	</target>
+	
+	<!-- ALL -->
+	<!-- THIS SHOULD PERFORM ALL OF THE ABOVE TASKS BUT NOT CLEAN -->
+
+	<target name="all" depends="run" description= this is step 7>
+		<echo> INITIATE RUN </echo>
+		<echo> FINISH RUN </echo>
+	</target>
+   
+	<!-- CLEAN -->
+	<!-- THIS WILL REMOVE ANY COMPILED CLASSES AND JARS CREATED -->
+
+	<target name="clean" depends="init" description= this is step 8>
+		<echo> INITIATE CLEAN </echo>
+		<delete dir="${build.dir}" />
+		<echo> FINISH CLEAN </echo>
+	</target>
+	
+</project>
