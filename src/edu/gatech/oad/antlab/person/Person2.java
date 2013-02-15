@@ -1,4 +1,4 @@
-package com.sherpas.m4.person;
+package edu.gatech.oad.antlab.person;
 
 import java.util.ArrayList;
 import java.util.Collections;
