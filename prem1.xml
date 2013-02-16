@@ -1,0 +1,93 @@
+<project name="M4" 
+         basedir="." 
+         default="all">
+         
+
+	<!-- Setting up all properties -->
+	<target name="init">
+		<echo> initiating init </echo>
+		<property name="src.dir" value="src/com/sherpas/m4/" />
+		<property name="build.dir" value="build" />
+		<property name="doc.dir" value="apidoc" />
+		<property name="out.dir" value="out" />
+		<property name="lib.dir" value="lib/resources.jar" />
+		<echo> init completed</echo>
+	</target>
+	
+	
+	<path id="myclasspath">
+		<fileset dir="${lib.dir}" >
+			<include name="resources.jar" />
+		</fileset>
+	</path>
+	
+	
+	<!-- Preparing all the required directories -->
+	<target name="prepare" depends="init">
+		<echo> initiating prepare </echo>
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${doc.dir}" />
+		<mkdir dir="${out.dir}" />
+		<echo> prepare completed</echo>
+	</target>
+	
+
+	<!-- compiling all java classes in the 'src' directory tree to the 'build' directory -->
+	<target name="compile" depends="prepare">
+		<echo> initiating compile </echo>
+		<javac srcdir="${src.dir}" 
+		       destdir="${build.dir}" 
+		       classpath="${lib.dir}" />
+		<echo> compile completed</echo>
+	</target>
+	
+	
+	<!-- generating the javadoc documentation for all java classes in the 'src' directory 
+         and storeing in the 'apidoc' directory -->
+	<target name="javadoc" depends="compile">
+		<echo> initiating javadoc </echo>
+		<javadoc sourcepath="${src.dir}" 
+		    	 destdir="${doc.dir}"/>
+		<echo> javadoc completed</echo>
+	</target>
+	
+	
+	<!-- packaging the compiled classes as a JAR-->
+	<target name="jar" depends="compile">
+		<echo> initiating jar </echo>
+		<jar destfile="AntLabRun.jar" 
+		    basedir="${build.dir}"
+			includes="${build.dir}/**" 
+			excludes="${lib.dir}">			
+		<manifest>
+			<attribute name="AntLabRun" value="edu.gatech.oad.AntLabRun"/>
+		</manifest>
+			</jar>
+		<echo> jar completed</echo>
+	</target>
+	
+
+	<!-- initiates program execution and commences the jar file created above-->
+	<target name="run" depends="jar">
+		<echo> initiating
+		     run </echo>
+		<java jar="AntLabRun.jar" fork="true">
+		<classpath>
+			<pathelement location="${build}"/>
+			<pathelement location="${jdk_lib}/j2me.jar"/>
+			<pathelement location="java.class.path"/>
+		</classpath>
+		</java>
+		<echo> run completed</echo>
+	</target>
+	
+	
+   <!-- run all tasks except cleanup -->
+   <target name="all" depends="run" />
+   
+   <!-- clean up all files created by the build -->
+   <target name="clean" depends="init" >
+      <delete dir="${build.dir}" />
+   </target>
+   	
+</project>
