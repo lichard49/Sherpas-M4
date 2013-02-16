@@ -48,12 +48,7 @@
 </target>
 
 <target name="run" depends="jar">
-	<java jar="${jar.dir}/${jar.name}.jar" fork="true">
-		<classpath>
-			<pathelement location="${library.dir}/resources.jar"/>
-			<pathelement location="java.class.path"/>
-		</classpath>
-	</java>
+	<java jar="${jar.dir}/${jar.name}.jar" fork="true"/>
 </target>
 	
 <target name="clean">
