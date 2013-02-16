@@ -1,0 +1,79 @@
+<project name="M4" basedir="." default="all">
+	<!-- 1.Init: set up properties-->
+	<target name="init">
+		<echo> Start Init </echo>
+		<property name="src.dir" value="src/com/sherpas/m4/" />
+		<property name="build.dir" value="build" />
+		<property name="doc.dir" value="apidoc" />
+		<property name="out.dir" value="out" />
+		<property name="lib.dir" value="lib/resources.jar" />
+		<echo> Finished Init</echo>
+	</target>
+	
+	<path id="myclasspath">
+		<fileset dir="${lib.dir}" >
+			<include name="resources.jar" />
+		</fileset>
+	</path>
+	
+	<!-- 2.Prepare: make a required directories -->
+	<target name="prepare" depends="init">
+		<echo> Start Prepare </echo>
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${doc.dir}" />
+		<mkdir dir="${out.dir}" />
+		<echo> Finished Prepare</echo>
+	</target>
+
+	<!-- 3.Compile -->
+	<target name="compile" depends="prepare" description="compiles classes in src to apidoc">
+		<echo> Start Compile  </echo>
+		<javac srcdir="${src.dir}" 
+		       destdir="${build.dir}" 
+		       classpath="${lib.dir}" />
+		<echo> Finished Compile</echo>
+	</target>
+	
+	<!-- 4.Javadocs -->
+	<target name="javadoc" depends="compile" description="generates docs">
+		<echo> Start Javadoc </echo>
+		<javadoc sourcepath="${src.dir}" 
+		    	 destdir="${doc.dir}"/>
+		<echo> Finished Javadoc </echo>
+	</target>
+	
+	<!-- 5.Jar -->
+	<target name="jar" depends="compile" description="package compiled classes">
+		<echo> Start Jar </echo>
+		<jar destfile="AntLabRun.jar" 
+		    basedir="${build.dir}"
+			includes="${build.dir}/**" 
+			excludes="${lib.dir}">			
+		<manifest>
+			<attribute name="AntLabRun" value="edu.gatech.oad.AntLabRun"/>
+		</manifest>
+			</jar>
+		<echo> Finished Jar </echo>
+	</target>
+	
+	<!-- 6.Run -->
+	<target name="run" depends="jar" description="start execution">
+		<echo> Start Run </echo>
+		<java jar="AntLabRun.jar" fork="true">
+		<classpath>
+			<pathelement location="${build}"/>
+			<pathelement location="${jdk_lib}/j2me.jar"/>
+			<pathelement location="java.class.path"/>
+		</classpath>
+		</java>
+		<echo> Finished Run </echo>
+	</target>
+	
+   <!-- 7.All tasks created in 'jar' -->
+   <target name="all" depends="run" />
+   
+   <!-- 8. Cleans up files made by build -->
+   <target name="clean" depends="init" >
+      <delete dir="${build.dir}" />
+   </target>
+</project>
