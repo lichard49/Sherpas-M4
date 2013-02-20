@@ -2,7 +2,7 @@
 	<!-- 1.Init: set up properties-->
 	<target name="init">
 		<echo> Start Init </echo>
-		<property name="src.dir" value="src/com/sherpas/m4/" />
+		<property name="src.dir" value="src/edu/gatech/oad/antlab/" />
 		<property name="build.dir" value="build" />
 		<property name="doc.dir" value="apidoc" />
 		<property name="out.dir" value="out" />
