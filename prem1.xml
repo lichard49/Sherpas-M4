@@ -1,4 +1,4 @@
-<project name="M4" 
+ <project name="M4" 
          basedir="." 
          default="all">
          
@@ -6,7 +6,7 @@
 	<!-- Setting up all properties -->
 	<target name="init">
 		<echo> initiating init </echo>
-		<property name="src.dir" value="src/com/sherpas/m4/" />
+		<property name="src.dir" value="src/edu/gatech/oad/antlab/"/> 
 		<property name="build.dir" value="build" />
 		<property name="doc.dir" value="apidoc" />
 		<property name="out.dir" value="out" />
@@ -69,8 +69,7 @@
 
 	<!-- initiates program execution and commences the jar file created above-->
 	<target name="run" depends="jar">
-		<echo> initiating
-		     run </echo>
+		<echo> initiating run </echo>		      
 		<java jar="AntLabRun.jar" fork="true">
 		<classpath>
 			<pathelement location="${build}"/>
