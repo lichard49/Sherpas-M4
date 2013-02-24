@@ -11,10 +11,12 @@
 	<target name="init" description= "this is step 1">
 		<echo> INITIATE INIT </echo>
 		<property name="build.dir" value="build" />
-		<property name="src.dir" value="src/com/sherpas/m4/" />
+		<property name="src.dir" value="src/edu/gatech.oad/antlab/" />
+		<property name="main.name" value= "edu/gatech/oad/antlab/pkg1/AntLabMain" />
 		<property name="doc.dir" value="apidoc" />
-		<property name="out.dir" value="out" />
 		<property name="lib.dir" value="lib/resources.jar" />
+		<property name="jar.name" value="AntLabRun.jar" />
+		<property name="package.name" value="edu.gatech.oad.antdemo" />
 		<echo> FINISH INIT </echo>
 	</target>
 	
@@ -25,7 +27,6 @@
 		<echo> INITIATE PREPARE </echo>
 		<mkdir dir="${build.dir}" />
 		<mkdir dir="${doc.dir}" />
-		<mkdir dir="${out.dir}" />
 		<echo> FINISH PREPARE </echo>
 	</target>
 
@@ -43,7 +44,14 @@
 
 	<target name="javadoc" depends="compile" description= "this is step 4">
 		<echo> INITIATE JAVADOC </echo>
-		<javadoc sourcepath="${src.dir}" destdir="${doc.dir}"/>
+		<javadoc sourcepath="${src.dir}" access="public" destdir="${doc.dir}" packagenames="package.name" classpath="${lib.dir}">
+			<fileset dir="${src.dir}">
+				<indlue name="**/*.java" />
+			</fileset>
+			<bottom>
+			<![CDATA{<i>Copyright &#169; 2013 Team Sherpas (30). All Rights Reserved. </i>]]>
+			</bottom>
+		</javadoc>
 		<echo> FINISH JAVADOC </echo>
 	</target>
 	
@@ -52,8 +60,7 @@
 
 	<target name="jar" depends="compile" description= "this is step 5">
 		<echo> INITIATE JAR </echo>
-		<jar destfile="AntLabRun.jar" basedir="${build.dir}"
-			includes="${build.dir}/**" excludes="${lib.dir}">
+		<jar destfile="${jar.name}" basedir="${build.dir}">
 			<manifest>
 				<attribute name="Main-Class" value="${main.dir}" />
 				<attribute name="Class-Path" value="${lib.dir}" />
@@ -67,7 +74,7 @@
 
 	<target name="run" depends="jar" description= "this is step 6">
 		<echo> INITIATE RUN </echo>
-		<java jar="AntLabRun.jar" fork="true">
+		<java jar="${jar.name}" fork="true">
 		</java>
 		<echo> FINISH RUN </echo>
 	</target>
@@ -86,6 +93,8 @@
 	<target name="clean" depends="init" description= "this is step 8">
 		<echo> INITIATE CLEAN </echo>
 		<delete dir="${build.dir}" />
+		<delete dir="${doc.dir}"/>
+		<delete file="${jar.name}" />
 		<echo> FINISH CLEAN </echo>
 	</target>
 	
