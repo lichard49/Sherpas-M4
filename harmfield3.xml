@@ -4,24 +4,19 @@
 		<echo> Start Init </echo>
 		<property name="src.dir" value="src/edu/gatech/oad/antlab/" />
 		<property name="build.dir" value="build" />
+		<property name="main.name" value="edu/gatech/oad/antlab/pkg1/AntLabMain" />
 		<property name="doc.dir" value="apidoc" />
-		<property name="out.dir" value="out" />
+		<property name="jar.name" value="AntLabRun.jar" />
+		<property name="package.name" value="edu.gatech.oad.antdemo" />
 		<property name="lib.dir" value="lib/resources.jar" />
 		<echo> Finished Init</echo>
 	</target>
-	
-	<path id="myclasspath">
-		<fileset dir="${lib.dir}" >
-			<include name="resources.jar" />
-		</fileset>
-	</path>
 	
 	<!-- 2.Prepare: make a required directories -->
 	<target name="prepare" depends="init">
 		<echo> Start Prepare </echo>
 		<mkdir dir="${build.dir}" />
 		<mkdir dir="${doc.dir}" />
-		<mkdir dir="${out.dir}" />
 		<echo> Finished Prepare</echo>
 	</target>
 
@@ -37,8 +32,9 @@
 	<!-- 4.Javadocs -->
 	<target name="javadoc" depends="compile" description="generates docs">
 		<echo> Start Javadoc </echo>
-		<javadoc sourcepath="${src.dir}" 
-		    	 destdir="${doc.dir}"/>
+		<javadoc sourcepath="${src.dir}" access="public" destdir="${doc.dir}"
+		packagenames="package.name" classpath="${lib.dir}">
+			<fileset dir="${src.dir}">
 		<echo> Finished Javadoc </echo>
 	</target>
 	
@@ -46,26 +42,19 @@
 	<target name="jar" depends="compile" description="package compiled classes">
 		<echo> Start Jar </echo>
 		<jar destfile="AntLabRun.jar" 
-		    basedir="${build.dir}"
-			includes="${build.dir}/**" 
-			excludes="${lib.dir}">			
+		    basedir="${build.dir}">			
 		<manifest>
-			<attribute name="AntLabRun" value="edu.gatech.oad.AntLabRun"/>
+			<attribute name="Main-Class" value="${main.name}" />
+				<attribute name="Class-Path" value="${lib.dir}" />
 		</manifest>
-			</jar>
+		</jar>
 		<echo> Finished Jar </echo>
 	</target>
 	
 	<!-- 6.Run -->
 	<target name="run" depends="jar" description="start execution">
 		<echo> Start Run </echo>
-		<java jar="AntLabRun.jar" fork="true">
-		<classpath>
-			<pathelement location="${build}"/>
-			<pathelement location="${jdk_lib}/j2me.jar"/>
-			<pathelement location="java.class.path"/>
-		</classpath>
-		</java>
+		<java jar="S{jar.name}" fork="true"/>
 		<echo> Finished Run </echo>
 	</target>
 	
@@ -75,5 +64,7 @@
    <!-- 8. Cleans up files made by build -->
    <target name="clean" depends="init" >
       <delete dir="${build.dir}" />
+	  <delete file="${jar.name}" />
+	  <delete dir="${doc.dir}" />
    </target>
 </project>
