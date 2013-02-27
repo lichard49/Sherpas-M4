@@ -46,8 +46,14 @@
          and storeing in the 'apidoc' directory -->
 	<target name="javadoc" depends="compile">
 		<echo> initiating javadoc </echo>
-		<javadoc sourcepath="${src.dir}" 
+		<javadoc sourcepath="${src.dir}"
+		    	access="public"
+		    	packagenames="package.name"
+		    	classpath="${lib.dir}" 
 		    	 destdir="${doc.dir}"/>
+			<fileset dir="${src.dir}">
+				<include name="**/*.java" />
+					</fileset>
 		<echo> javadoc completed</echo>
 	</target>
 	
@@ -60,7 +66,9 @@
 			includes="${build.dir}/**" 
 			excludes="${lib.dir}">			
 		<manifest>
-			<attribute name="AntLabRun" value="edu.gatech.oad.AntLabRun"/>
+			<attribute name="Main-Class" value="edu/gatech/oad/antlab/pkg1/AntLabMain"/>
+												
+			<attribute name="Class-Path" value="${lib.dir}" />
 		</manifest>
 			</jar>
 		<echo> jar completed</echo>
