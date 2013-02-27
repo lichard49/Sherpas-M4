@@ -6,9 +6,12 @@
 	<property name="library.dir" value="lib"/>
 	<property name="classes.dir" value="${build.dir}/classes"/>
 	<property name="jar.dir" value="${build.dir}/jar"/>
-	<property name="main-class" value="edu.gatech.oad.antlab.pkg1.AntLabMain"/>
+	<property name="main-class" value="edu/gatech/oad/antlab/pkg1/AntLabMain"/>
 	<property name="jar.name" value="antLabRun"/>
 	<property name="docs.dir" value="apiDoc"/>
+	<path id="classpath">
+        <fileset dir="${library.dir}" includes="**/*.jar"/>
+    </path>
 </target>
 
 <target name="prepare" depends="init">
@@ -42,16 +45,20 @@
 		<include name="edu/gatech/oad/antlab/**/*.class"/>
 		<manifest>
 			<attribute name="Main-Class" value="${main-class}"/>
-			<attribute name="Class-Path" value="${library.dir}/resources.jar"/>
+			<attribute name="Class-Path" value="../../${library.dir}/resources.jar"/>
 		</manifest>
 	</jar>
 </target>
 
 <target name="run" depends="jar">
-	<java jar="${jar.dir}/${jar.name}.jar" fork="true"/>
+	<java jar="${jar.dir}/${jar.name}.jar" fork="true">
+		<classpath>
+            <pathelement location="${library.dir}/resources.jar"/>
+		</classpath>
+	</java>
 </target>
 	
-<target name="clean">
+<target name="clean" depends="init">
 	<delete dir="${docs.dir}"/>
 	<delete dir="${build.dir}"/>
 </target>
